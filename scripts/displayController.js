@@ -5,11 +5,19 @@ const DisplayController = (() => {
     
     const renderBoard = () => {
         boardElement.innerHTML = "";
+        const winningCells = Game.getWinningCells();
+        
         Gameboard.getBoard().forEach((cell, index) => {
             const cellElement = document.createElement("div");
             cellElement.classList.add("cell");
             cellElement.dataset.index = index;
             cellElement.textContent = cell;
+            
+            if (winningCells.includes(Number(index))) {
+                cellElement.classList.add("win");
+                cellElement.classList.add(cell.toLowerCase()); // Add 'x' or 'o' class
+            }
+            
             boardElement.appendChild(cellElement);
         });
     };

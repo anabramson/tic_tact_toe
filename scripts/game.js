@@ -2,6 +2,7 @@ const Game = (() => {
     let players = [];
     let currentPlayerIndex;
     let gameOver;
+    let winningCells = [];
     
     const start = (player1Name, player2Name) => {
         players = [
@@ -10,6 +11,7 @@ const Game = (() => {
         ];
         currentPlayerIndex = 0;
         gameOver = false;
+        winningCells = [];
         Gameboard.resetBoard();
     };
     
@@ -27,10 +29,16 @@ const Game = (() => {
         ];
         
         const board = Gameboard.getBoard();
-        return winPatterns.some(pattern => {
+        const winningPattern = winPatterns.find(pattern => {
             const [a, b, c] = pattern;
             return board[a] && board[a] === board[b] && board[a] === board[c];
         });
+        
+        if (winningPattern) {
+            winningCells = winningPattern;
+            return true;
+        }
+        return false;
     };
     
     const checkTie = () => {
@@ -55,5 +63,12 @@ const Game = (() => {
         return false;
     };
     
-    return { start, getCurrentPlayer, playRound };
+    const getWinningCells = () => winningCells;
+    
+    return { 
+        start, 
+        getCurrentPlayer, 
+        playRound,
+        getWinningCells
+    };
 })();
